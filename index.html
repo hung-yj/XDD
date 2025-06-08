@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>社群媒體平台</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      background-color: #f0f2f5;
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar-left, .sidebar-right {
+      position: sticky;
+      top: 70px;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar-left .quick-action, .sidebar-left .friend-suggestion {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+    .sidebar-left .quick-action:hover, .sidebar-left .friend-suggestion:hover {
+      background: #e9ecef;
+    }
+    .friend-suggestion .add-friend-btn {
+      font-size: 14px;
+    }
+    .sidebar-right .activity {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      animation: fadeIn 0.5s ease;
+    }
+    .post-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .post-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .post-header {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+    }
+    .profile-pic {
+      width: 50px;
+      height: 50px;
+      background: #ccc;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+    .post-content {
+      padding: 0 15px 15px;
+    }
+    .interaction-btn {
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .interaction-btn:hover {
+      color: #0d6efd;
+    }
+    .like-btn.liked {
+      color: #dc3545;
+      animation: pulse 0.3s ease;
+    }
+    .share-btn.shared {
+      color: #198754;
+      animation: pulse 0.3s ease;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .comment-section {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+    .comment-section.show {
+      max-height: 200px;
+    }
+    .comment-input {
+      border-radius: 20px;
+      margin-top: 10px;
+    }
+    .comment {
+      padding: 10px;
+      border-top: 1px solid #eee;
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 導覽列 -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">社群媒體</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">首頁</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">朋友</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">訊息</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">通知</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">個人檔案</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="bg-primary text-white text-center py-5 mb-4 rounded">
+    <h1 class="mb-3">歡迎來到XX平台</h1>
+    <p>在這裡與朋友分享你的生活點滴，探索更多精彩內容！</p>
+  </div>
+  
+  <div class="container mt-4">
+    <div class="row">
+      <!-- 左側欄：快捷操作和朋友推薦 -->
+      <div class="col-md-3">
+        <div class="sidebar-left">
+          <h5 class="mb-3">快捷操作</h5>
+          <div class="quick-action">
+            <i class="bi bi-pencil-square me-2"></i> 發布貼文
+          </div>
+          <div class="quick-action">
+            <i class="bi bi-camera me-2"></i> 上傳照片
+          </div>
+          <div class="quick-action">
+            <i class="bi bi-calendar-event me-2"></i> 創建活動
+          </div>
+          <hr>
+          <h5 class="mb-3">朋友推薦</h5>
+          <div class="friend-suggestion">
+            <div class="d-flex align-items-center">
+              <div class="profile-pic me-2"></div>
+              <div>
+                <div>小華</div>
+                <button class="btn btn-primary btn-sm add-friend-btn">加為好友</button>
+              </div>
+            </div>
+          </div>
+          <div class="friend-suggestion">
+            <div class="d-flex align-items-center">
+              <div class="profile-pic me-2"></div>
+              <div>
+                <div>小強</div>
+                <button class="btn btn-primary btn-sm add-friend-btn">加為好友</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 中間：貼文區 -->
+      <div class="col-md-6">
+        <div id="posts">
+          <!-- 貼文將動態插入這裡 -->
+        </div>
+      </div>
+
+      <!-- 右側欄：即時動態 -->
+      <div class="col-md-3">
+        <div class="sidebar-right">
+          <h5 class="mb-3">即時動態</h5>
+          <div class="activity">小明 讚了你的貼文</div>
+          <div class="activity">小花 分享了一張照片</div>
+          <div class="activity">小強 加入了新群組</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // 模擬貼文數據
+      const posts = [
+        { id: 1, username: "小明", content: "今天天氣很好，去爬山了！", likes: 10 },
+        { id: 2, username: "小花", content: "分享一張夕陽照片，太美了！", likes: 15 },
+        { id: 3, username: "小宣", content: "我同學今天送我吃香蕉", likes: 29 },
+        { id: 4, username: "小成", content: "買了路也奇蹟 很好吃", likes: 66 },
+      ];
+
+      // 模擬即時動態數據
+      const activities = [
+        "小明 讚了你的貼文",
+        "小花 分享了一張照片",
+        "小強 加入了新群組",
+        "小美 發布了新貼文"
+      ];
+
+      // 渲染貼文
+      function renderPosts() {
+        $("#posts").empty();
+        posts.forEach(post => {
+          const postHtml = `
+            <div class="post-card" data-id="${post.id}">
+              <div class="post-header">
+                <div class="profile-pic"></div>
+                <h5>${post.username}</h5>
+              </div>
+              <div class="post-content">${post.content}</div>
+              <div class="post-interactions p-3">
+                <span class="interaction-btn like-btn" data-id="${post.id}">
+                  <i class="bi bi-heart"></i> 讚 (<span class="like-count">${post.likes}</span>)
+                </span>
+                <span class="interaction-btn comment-btn ms-3" data-id="${post.id}">
+                  <i class="bi bi-chat"></i> 評論
+                </span>
+                <span class="interaction-btn share-btn ms-3" data-id="${post.id}">
+                  <i class="bi bi-share"></i> 分享
+                </span>
+                <div class="comment-section mt-3" data-id="${post.id}">
+                  <div class="comments"></div>
+                  <input type="text" class="form-control comment-input" placeholder="寫下你的評論...">
+                </div>
+              </div>
+            </div>`;
+          $("#posts").append(postHtml);
+        });
+      }
+
+      // 渲染即時動態
+      function renderActivities() {
+        $(".sidebar-right").empty().append('<h5 class="mb-3">即時動態</h5>');
+        activities.forEach(activity => {
+          $(".sidebar-right").append(`<div class="activity">${activity}</div>`);
+        });
+      }
+
+      // 初始化
+      renderPosts();
+      renderActivities();
+
+      // 點讚功能
+      $(document).on("click", ".like-btn", function() {
+        const postId = $(this).data("id");
+        const post = posts.find(p => p.id === postId);
+        const $likeBtn = $(this);
+        const $likeCount = $likeBtn.find(".like-count");
+        if ($likeBtn.hasClass("liked")) {
+          post.likes--;
+          $likeBtn.removeClass("liked");
+        } else {
+          post.likes++;
+          $likeBtn.addClass("liked");
+        }
+        $likeCount.text(post.likes);
+      });
+
+      // 評論功能
+      $(document).on("click", ".comment-btn", function() {
+        const postId = $(this).data("id");
+        $(`.comment-section[data-id=${postId}]`).toggleClass("show");
+      });
+
+      $(document).on("keypress", ".comment-input", function(e) {
+        if (e.which === 13 && $(this).val().trim()) {
+          const postId = $(this).closest(".comment-section").data("id");
+          const commentText = $(this).val();
+          $(`.comment-section[data-id=${postId}] .comments`).append(
+            `<div class="comment">${commentText}</div>`
+          );
+          $(this).val("");
+        }
+      });
+
+      // 分享功能
+      $(document).on("click", ".share-btn", function() {
+        const $shareBtn = $(this);
+        $shareBtn.addClass("shared");
+        setTimeout(() => $shareBtn.removeClass("shared"), 1000);
+        alert("已分享貼文！");
+      });
+
+      // 快捷操作點擊
+      $(document).on("click", ".quick-action", function() {
+        const action = $(this).text().trim();
+        alert(`執行：${action}`);
+      });
+
+      // 加好友功能
+      $(document).on("click", ".add-friend-btn", function() {
+        const $btn = $(this);
+        $btn.text("已送出請求").removeClass("btn-primary").addClass("btn-secondary").prop("disabled", true);
+        setTimeout(() => {
+          $btn.closest(".friend-suggestion").fadeOut(300, function() {
+            $(this).remove();
+          });
+        }, 1000);
+      });
+
+      // 模擬即時動態更新
+      setInterval(() => {
+        const newActivity = `有人 ${Math.floor(Math.random() * 100)} 分鐘前做了某事`;
+        activities.unshift(newActivity);
+        if (activities.length > 5) activities.pop();
+        renderActivities();
+      }, 10000);
+    });
+  </script>
+</body>
+<!-- Footer -->
+<footer class="bg-white text-center text-muted py-4 mt-5 border-top">
+  <div class="container">
+    <p class="mb-1">© 2025 社群媒體平台 - 所有權利保留</p>
+    <div>
+      <a href="#" class="text-muted me-3"><i class="bi bi-facebook"></i></a>
+      <a href="#" class="text-muted me-3"><i class="bi bi-twitter"></i></a>
+      <a href="#" class="text-muted me-3"><i class="bi bi-instagram"></i></a>
+      <a href="#" class="text-muted"><i class="bi bi-envelope"></i> 聯絡我們</a>
+    </div>
+  </div>
+</footer>
+
+</html>
